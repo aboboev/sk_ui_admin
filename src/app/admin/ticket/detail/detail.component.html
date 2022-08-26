@@ -1,0 +1,88 @@
+
+<div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-body">
+                    <pre>
+                        <h3 class="card-title">{{ticket.title}}</h3>
+                    </pre>
+                    <p>
+                        {{'LABEL.CREATED' | translate}}: {{ticket.created_at | date: 'dd MMMM yyyy HH:mm'}}
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        {{'LABEL.UPDATED' | translate}}: {{ticket.updated_at | date: 'dd MMMM yyyy HH:mm'}}
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mb-3" *ngIf="ticket.status != 2">
+        <div class="col-md-12">
+            <button type="button" class="btn btn-success" (click)="onReply()">
+                {{'BUTTON.REPLY' | translate}}
+            </button>
+            <button type="button" class="btn btn-danger" (click)="closeTicket()">
+                {{'BUTTON.CLOSE_TICKET' | translate}}
+            </button>
+        </div>
+    </div>
+
+    <div class="row" *ngIf="isReply">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-body">
+                    <form>
+                        <div class="row">
+                            <div class="form-group col-md-12">
+                                <label>{{'LABEL.MESSAGE' | translate}}</label>
+                                <textarea class="form-control" rows="10" name="message"
+                                          [(ngModel)]="ticket.message"></textarea>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-md-12">
+                                <label>{{'LABEL.ADD_ATTACH_FILE' | translate}}</label>
+                                <div class="controls">
+                                    <input type="file" name="file" class="form-control"
+                                           (change)="fileChangeListener($event)">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <button type="button" class="btn btn-info" (click)="sendTicket()">
+                                    {{'BUTTON.SEND' | translate}}
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row" *ngFor="let detail of details;">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-3 border-right-1">
+                            <p>{{detail.username}}</p>
+                            <!--<p>{{(detail.user_type == 0 ? 'LABEL.USER' : 'LABEL.ADMIN') | translate}}</p>-->
+                        </div>
+                        <div class="col-md-9">
+                            <p class="border-bottom-1">
+                                {{'LABEL.POSTED_ON' | translate}}  {{detail.created_at | date: 'dd MMMM yyyy HH:mm'}}
+                            </p>
+                            <pre>{{detail.message}}</pre>
+                            <p *ngIf="detail.attach_name != ''">
+                                <a target="_blank" href="{{detail.attach_url}}">{{detail.attach_name}}</a>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,325 @@
+<div class="row">
+    <div class="col-md-3">
+        <div class="card">
+            <div class="card-body">
+                <div class="table-responsive pair-table">
+                    <table class="table ">
+                        <thead>
+                        <tr>
+                            <th></th>
+                            <th>{{'LABEL.COIN' | translate}}</th>
+                            <th>{{'LABEL.NAME' | translate}}</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr *ngFor="let coin of coins" [ngClass]="{'active': coin.coin == selCoin}" (click)="onClickCoin(coin)">
+                            <td class="text-center"><i class="fa fa-star"></i></td>
+                            <td>{{coin.coin}}</td>
+                            <td>{{coin.fullname}}<label *ngIf="coin.count > 0" class="label label-rounded label-info float-right">{{coin.count}}</label></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-9">
+        <div class="row" *ngIf="selCoinInfo.is_crypto == 0">
+            <div class="col-md-12">
+                <div class="card">
+                    <table-loader *ngIf="loading"></table-loader>
+                    <div class="card-body">
+                        <div class="card-title">
+                            <h3>Pending List</h3>
+                        </div>
+                        <div class="table-responsive m-t-20">
+                            <table id="pendings" class="table table-bordered">
+                                <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <!--<th>EMAIL</th>-->
+                                    <th>USER NAME</th>
+                                    <th>IBAN CODE/EPAY ACCOUNT</th>
+                                    <th>AMOUNT</th>
+                                    <th>FEE</th>
+                                    <th>WITHDRAWAL AMOUNT</th>
+                                    <th>CREATED AT</th>
+                                    <th>EPAY</th>
+                                    <th>ACTION</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr *ngFor="let pending of pendings; let i=index;">
+                                    <td>{{i + 1}}</td>
+                                    <!--<twithdrawpendingding.email}}</td>-->
+                                    <td>{{pending.username}}</td>
+                                    <td>{{pending.to_address}}</td>
+                                    <td>{{pending.src_amount | number:'1.2-2'}}</td>
+                                    <td>{{pending.fee| number:'1.2-2'}}</td>
+                                    <td>{{pending.src_amount - pending.fee | number:'1.2-2'}}</td>
+                                    <td>{{pending.created_at | date:'yyyy-MM-dd HH:mm:ss'}}</td>
+                                    <td>{{pending.is_epay == 1 ? 'yes' : 'no'}}</td>
+                                    <td>
+                                        <button type="button" class="btn btn-success btn-round" (click)="withdrawFinance(pending.id)">
+                                            Confirm
+                                        </button>
+                                        <button type="button" class="btn btn-danger btn-round" (click)="deleteFinanceWithdraw(pending.id)">
+                                            Delete
+                                        </button>
+                                    </td>
+                                </tr>
+                                <tr *ngIf="pendings.length == 0">
+                                    <td class="text-center" colspan="9">
+                                        No Withdraw transactions found.
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row" *ngIf="selCoinInfo.is_crypto == 1 && multiCoins.includes(selCoin)">
+            <!-- Column -->
+            <div class="col-md-12">
+                <div class="card">
+                    <form class="form-material">
+                        <div class="card-body">
+                            <div class="card-title">
+                                <h3>Withdraw</h3>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <label>Wallet Balance</label>
+                                </div>
+                                <div class="col-md-9">
+                                    <label>{{total.balance | number:'1.8-8'}} {{selCoin}}</label>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <label>Total Withdraws</label>
+                                </div>
+                                <div class="col-md-9">
+                                    <label>{{total.count | number:'1.0-0'}}</label>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <label>Total Amounts</label>
+                                </div>
+                                <div class="col-md-9">
+                                    <label>{{total.amount | number:'1.8-8'}} {{selCoin}} </label>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <label>Total Fees</label>
+                                </div>
+                                <div class="col-md-9">
+                                    <label>{{total.fee | number:'1.8-8'}} {{selCoin}} </label>
+                                </div>
+                            </div>
+
+                            <div class="row" *ngIf="estimateCoins.includes(selCoin)">
+                                <div class="col-md-3">
+                                    <label>Estimated Fees</label>
+                                </div>
+                                <div class="col-md-2">
+                                    <label>{{total.estimated_fee | number:'1.8-8'}} {{selCoin}} </label>
+                                </div>
+                                <div class="col-md-2">
+                                    <label>Set Priority: </label>
+                                </div>
+                                <div class="form-group col-md-2">
+                                    <select class="form-control" name="priority" [(ngModel)]="total.priority">
+                                        <option value="0">HIGH</option>
+                                        <option value="1">MEDIUM</option>
+                                        <option value="2">LOW</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-3">
+                                    <button type="button" class="btn btn-danger btn-sm" (click)="estimateWithdrawFee()">
+                                        ESTIMATE FEE
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <label>Fee Profit</label>
+                                </div>
+                                <div class="col-md-9">
+                                    <label>{{total.fee - total.estimated_fee | number:'1.8-8'}}{{selCoin}}
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="row mt-2">
+                                <div class="col-md-3"></div>
+                                <div class="col-md-9">
+                                    <button type="button" class="btn btn-success" (click)="withdrawMultiCoin()">
+                                        WITHDRAW
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="row" *ngIf="selCoinInfo.is_crypto == 1 && !multiCoins.includes(selCoin)">
+            <div class="col-md-12">
+                <div class="card">
+                    <form class="form-material">
+                        <div class="card-body">
+                            <div class="card-title">
+                                <h3>Withdraw</h3>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <label>Wallet Balance</label>
+                                </div>
+                                <div class="col-md-9">
+                                    <label>{{total.balance | number:'1.8-8'}} {{selCoin}}</label>
+                                    <button type="button" class="btn btn-info" *ngIf="showWalletCoins.includes(selCoin)" (click)="onClickShowWallet()">All Wallet</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="row" *ngIf="selCoinInfo.is_crypto == 1">
+            <div class="col-md-12">
+                <div class="card">
+                    <table-loader *ngIf="loading"></table-loader>
+                    <div class="card-body">
+                        <div class="card-title">
+                            <h3>Pending List</h3>
+                        </div>
+                        <div>
+                            <button type="button" class="btn btn-info" (click)="selectAll()"
+                                    *ngIf="multiCoins.includes(selCoin)">
+                                Select ALL
+                            </button>
+                        </div>
+                        <div class="table-responsive m-t-20">
+                            <table class="table table-bordered">
+                                <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <!--<th>EMAIL</th>-->
+                                    <th>USER NAME</th>
+                                    <th>ADDRESS</th>
+                                    <th *ngIf="selCoin == 'XRP'">DESTINATION TAG</th>
+                                    <th *ngIf="selCoin == 'CVN' || selCoin == 'DEEX' || selCoin == 'SCR' || selCoin == 'BRAVO'">MEMO</th>
+                                    <th *ngIf="selCoin == 'ETN' || selCoin == 'CCX'">PaymentID</th>
+                                    <th>AMOUNT</th>
+                                    <th>FEE</th>
+                                    <th>WITHDRAWAL AMOUNT</th>
+                                    <th>CREATED AT</th>
+                                    <th>ACTION</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr *ngFor="let pending of pendings; let i=index;" [ngClass]="{'table-info': pending.selected == 1}" (click)="onClickRow(pending)">
+                                    <td>{{i + 1}}</td>
+                                    <!--<twithdrawpendingding.email}}</td>-->
+                                    <td>{{pending.username}}</td>
+                                    <td>{{pending.address}}</td>
+                                    <td *ngIf="selCoin == 'XRP' || selCoin == 'CVN' || selCoin == 'DEEX' || selCoin == 'SCR' || selCoin == 'BRAVO'">{{pending.destination_tag}}</td>
+                                    <td *ngIf="selCoin == 'ETN' || selCoin == 'CCX'">{{pending.payment_id}}</td>
+                                    <td>{{pending.src_amount | number:'1.8-8'}}</td>
+                                    <td>{{pending.fee| number:'1.8-8'}}</td>
+                                    <td>{{pending.src_amount - pending.fee | number:'1.8-8'}}</td>
+                                    <td>{{pending.created_at | date:'yyyy-MM-dd HH:mm:ss'}}</td>
+                                    <td>
+                                        <button type="button" class="btn btn-success btn-round" (click)="withdrawOnePending(pending)"
+                                                *ngIf="!multiCoins.includes(selCoin) && !manualCoins.includes(selCoin)">
+                                            <i class="mdi mdi-view-dashboard"></i>Withdraw
+                                        </button>
+                                        <button type="button" class="btn btn-success btn-round" (click)="withdrawManual(pending)"
+                                                *ngIf="manualCoins.includes(selCoin)">
+                                            <i class="mdi mdi-view-dashboard"></i>Withdraw
+                                        </button>
+                                        <button type="button" class="btn btn-danger btn-round" (click)="rejectWithdrawPending(pending)">Reject</button>
+                                    </td>
+                                </tr>
+                                <tr *ngIf="pendings.length == 0">
+                                    <td class="text-center" colspan="7">
+                                        No Withdraw transactions found.
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<div class="row" *ngIf="showWallet">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="card-title">
+                    <h3>Wallet</h3>
+                </div>
+                <div>
+                    <button type="button" class="btn btn-info" (click)="onClickShowWallet()">
+                        Refresh
+                    </button>
+                </div>
+                <div class="table-responsive m-t-20">
+                    <table id="wallettable" class="table table-bordered">
+                        <thead>
+                        <tr>
+                            <th>Email</th>
+                            <th>Address</th>
+                            <th>{{selCoin}}</th>
+                            <th>Action</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr *ngFor="let wallet of wallets">
+                            <td>{{wallet.email}}</td>
+                            <td>{{wallet.address}}</td>
+                            <td>{{wallet.coin_value}}</td>
+                            <td>
+                                <button type="button" class="btn btn-success btn-round" (click)="moveToMainWallet(wallet.address)">
+                                    Move to MainWallet
+                                </button>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<modal-dialog [(visible)]="showTxidDialog" [closable]="false">
+    <form class="form-horizontal">
+        <h2 class="text-center">
+            Input Txid
+        </h2>
+
+        <input type="text" class="form-control" style="text-align: center; font-size: 20px;" name="txid"
+               [(ngModel)]="txid">
+
+        <div class="text-center" style="margin-top: 20px;">
+            <button type="button" class="btn btn-primary" (click)="submitTxid()">Submit
+            </button>
+            <button type="button" class="btn btn-default" (click)="showTxidDialog = !showTxidDialog">Cancel
+            </button>
+        </div>
+    </form>
+</modal-dialog>

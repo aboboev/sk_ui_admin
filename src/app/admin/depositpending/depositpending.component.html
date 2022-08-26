@@ -1,0 +1,27 @@
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <ul class="nav nav-pills">
+                    <li class=" nav-item text-center">
+                        <a [routerLink]="['tl']" class="nav-link" routerLinkActive="active">
+                            <span><b><i class="fa fa-turkish-lira"></i> TL</b></span>
+                        </a>
+                    </li>
+                    <li class=" nav-item text-center">
+                        <a [routerLink]="['usd']" class="nav-link" routerLinkActive="active">
+                            <span><b><i class="fa fa-usd"></i> USD</b></span>
+                        </a>
+                    </li>
+                    <li class=" nav-item text-center">
+                        <a [routerLink]="['euro']" class="nav-link" routerLinkActive="active">
+                            <span><b><i class="fa fa-euro"></i> EURO</b></span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<router-outlet></router-outlet>

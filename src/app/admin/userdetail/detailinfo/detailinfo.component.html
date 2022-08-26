@@ -1,0 +1,118 @@
+<div class="row">
+    <!-- Column -->
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-body">
+                <form class="form-material">
+
+                    <div class="form-group row">
+                        <label class="control-label text-right col-md-3">Email</label>
+                        <div class="col-md-9">
+                            <input type="email" class="form-control form-control-line" [(ngModel)]="profile.email" name="email" id="email" readonly>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="control-label text-right col-md-3">First Name</label>
+                        <div class="col-md-9">
+                            <input type="text" name="name" [(ngModel)]="profile.firstname" class="form-control form-control-line">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="control-label text-right col-md-3">Last Name</label>
+                        <div class="col-md-9">
+                            <input type="text" name="surname" [(ngModel)]="profile.surname" class="form-control form-control-line">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="control-label text-right col-md-3">Phone Number</label>
+                        <div class="col-md-9">
+                            <input type="text" name="phone_number" [(ngModel)]="profile.phone_number" class="form-control form-control-line">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="control-label text-right col-md-3">Address</label>
+                        <div class="col-md-9">
+                            <input type="text" name="address" [(ngModel)]="profile.address" class="form-control form-control-line">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="control-label text-right col-md-3">Verify Status</label>
+                        <div class="col-md-9">
+                            <select class="form-control custom-select" name="verify_status" [(ngModel)]="profile.verify_status">
+                                <!--<option value="0">{{'LABEL.NONE' | translate}}</option>-->
+                                <option value="0">Unverified</option>
+                                <option value="1">Pending</option>
+                                <option value="2">Failed</option>
+                                <option value="3">Verified</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="control-label text-right col-md-3">Verify Type</label>
+                        <div class="col-md-9">
+                            <select class="form-control custom-select" name="verify_type" [(ngModel)]="profile.verify_type">
+                                <option value="0">{{'LABEL.NONE' | translate}}</option>
+                                <option value="1">{{'LABEL.ID_CARD' | translate}}</option>
+                                <option value="2">{{'LABEL.PASSPORT' | translate}}</option>
+                                <option value="3">{{'LABEL.DRIVING_LICENSE' | translate}}</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group row" *ngIf="profile.verify_type > 0">
+                        <label class="control-label text-right col-md-3">ID CARD Number</label>
+                        <div class="col-md-9">
+                            <input type="text" name="idcard_number" [(ngModel)]="profile.idcard_number" class="form-control form-control-line">
+                        </div>
+                    </div>
+
+                    <div class="form-group row" *ngIf="profile.verify_type > 0">
+                        <div class="col-md-3"></div>
+                        <div class="col-md-9">
+                            <a target="_blank" class="image-popup-no-margins" href="{{profile.idcard_url}}" title="This image fits only horizontally."> <img src="{{profile.idcard_url}}" alt="image" class="img-responsive" /> </a>
+
+                            <input type="file" id="inputFile" style="display: none;" name="file" class="form-control" (change)="fileChangeListener($event)">
+                        </div>
+                    </div>
+                    <div class="form-group row" *ngIf="profile.verify_type > 0">
+                        <div class="col-md-3"></div>
+                        <div class="col-md-9">
+                            <button type="button" class="btn btn-primary" (click)="onChooseFile()">Change</button>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="control-label text-right col-md-3">IBAN CODE</label>
+                        <div class="col-md-9">
+                            <input type="text" name="iban_code" [(ngModel)]="profile.iban_code" class="form-control form-control-line">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="control-label text-right col-md-3">Confirm Type</label>
+                        <div class="col-md-9">
+                            <select class="form-control custom-select" name="verify_type" [(ngModel)]="profile.allowed_g2f">
+                                <option value="0">None</option>
+                                <option value="1">Google Authenticator</option>
+                                <option value="2">SMS</option>
+                                <option value="3">EMAIL</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="control-label text-right col-md-3">G2F MASTERCODE</label>
+                        <div class="col-md-9">
+                            <input type="text" name="g2f_security_code" value="{{profile.g2f_security_code}}" class="form-control form-control-line" readonly>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-md-3"></div>
+                        <div class="col-md-9">
+                            <button class="btn btn-success" (click)="saveProfile()">Update</button>
+                            <button class="btn btn-danger" (click)="openAccount()" *ngIf="profile.close == 1">Open Account</button>
+                            <button class="btn btn-primary" (click)="closeAccount()" *ngIf="profile.close == 0">Close Account</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

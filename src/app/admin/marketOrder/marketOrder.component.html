@@ -1,0 +1,84 @@
+
+<div class="row">
+
+    <div class="col-md-3">
+        <div class="card">
+            <div class="card-body">
+                <div class="coin-pair">
+                    <div class="tabs">
+                        <ul>
+                            <li class="text-center" [ngClass]="{'active': activeMarketCoin=='TL'}" (click)="onSelectMarketCoin('TL')">TL</li>
+                            <li class="text-center" [ngClass]="{'active': activeMarketCoin=='BTC'}" (click)="onSelectMarketCoin('BTC')">BTC</li>
+                            <li class="text-center" [ngClass]="{'active': activeMarketCoin=='USDT'}" (click)="onSelectMarketCoin('USDT')">USDT</li>
+                            <li class="text-center" [ngClass]="{'active': activeMarketCoin=='ETH'}" (click)="onSelectMarketCoin('ETH')">ETH</li>
+                            <li class="text-center" [ngClass]="{'active': activeMarketCoin=='XRP'}" (click)="onSelectMarketCoin('XRP')">XRP</li>
+                            <li class="text-center" [ngClass]="{'active': activeMarketCoin=='USD'}" (click)="onSelectMarketCoin('USD')">USD</li>
+                            <li class="text-center" [ngClass]="{'active': activeMarketCoin=='EURO'}" (click)="onSelectMarketCoin('EURO')">EURO</li>
+                            <li class="text-center" [ngClass]="{'active': activeMarketCoin=='MISC'}" (click)="onSelectMarketCoin('MISC')">MISC</li>
+                        </ul>
+                    </div>
+                    <div class="table-responsive pair-table">
+                        <table class="table ">
+                            <thead>
+                            <tr>
+                                <th></th>
+                                <th>{{'LABEL.PAIR' | translate}}</th>
+                                <th>{{'LABEL.PRICE' | translate}}</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr *ngFor="let pair of pairs" [ngClass]="{'active': pair.coin == selCoin && pair.market_coin == selMarketCoin}" (click)="onClickPair(pair)">
+                                <td class="text-center"><i class="fa fa-star"></i></td>
+                                <td>{{pair.coin}}/{{pair.market_coin}}</td>
+                                <td>{{pair.last_price | number:'1.'+pair.places+'-'+pair.places}}</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-9">
+        <div class="card">
+            <div class="card-body">
+                <div class="card-title">
+                    <h3>Open Orders</h3>
+                </div>
+                <div class="table-responsive m-t-20">
+                    <table id="historytable" class="table table-bordered">
+                        <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>DATETIME</th>
+                            <th>USERNAME</th>
+                            <th>TYPE</th>
+                            <th>RATE</th>
+                            <th>AMOUNT</th>
+                            <th>PRICE</th>
+                            <th>ACTION</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr *ngFor="let order of orders; let i=index;">
+                            <td>{{i + 1}}</td>
+                            <td>{{order.created_at | date:'yyyy-MM-dd HH:mm:ss'}}</td>
+                            <td>{{order.name}}</td>
+                            <td><label class="label label-sm"
+                                       [ngClass]="{'label-success': order.type == 0, 'label-info': order.type == 1}">
+                                {{order.type == 0 ? 'BUY' : 'SELL'}}</label></td>
+                            <td>{{order.rate | number:'1.'+selPair.places+'-'+selPair.places}}</td>
+                            <td>{{(order.type == 0 ? order.dest_amount : order.src_amount) | number:'1.8-8'}}</td>
+                            <td>{{(order.type == 0 ? order.dest_amount * order.rate : order.src_amount * order.rate) | number:'1.8-8'}}</td>
+                            <td><button type="button" class="btn btn-sm btn-danger" (click)="onDelete(order.id)">
+                                <i class="fa fa-close"></i></button>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

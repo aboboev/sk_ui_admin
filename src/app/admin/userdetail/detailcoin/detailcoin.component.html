@@ -1,0 +1,122 @@
+<div class="row">
+
+    <div class="col-md-3">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="table-responsive pair-table">
+                            <table class="table ">
+                                <thead>
+                                <tr>
+                                    <th></th>
+                                    <th>{{'LABEL.COIN' | translate}}</th>
+                                    <th>{{'LABEL.BALANCE' | translate}}</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr *ngFor="let coin of coins" [ngClass]="{'active': coin.coin == selCoin}" (click)="onClickCoin(coin)">
+                                    <td class="text-center"><i class="fa fa-star"></i></td>
+                                    <td>{{coin.coin}}</td>
+                                    <td>{{user.getBalance(coin.coin) | number:'1.8-8'}}</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-9">
+        <div class="card">
+            <table-loader *ngIf="loading"></table-loader>
+            <div class="card-body">
+                <div class="card-title">
+                    <h3>{{selCoin}} Transaction List</h3>
+                </div>
+                <div *ngIf="settings.getUserSetting('role') == 'superadmin'">
+                    <button type="button" class="btn btn-info" (click)="onAddManual()">
+                        Add Manual {{selCoin}}
+                    </button>
+                </div>
+                <div class="table-responsive m-t-20">
+                    <ngx-datatable
+                            #table
+                            class="material"
+                            [rows]="history"
+                            [columnMode]="'force'"
+                            [headerHeight]="50"
+                            [footerHeight]="50"
+                            [rowHeight]="'auto'"
+                            [limit]="10">
+                        <ngx-datatable-column name="TIME">
+                            <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
+                                {{row['datetime'] * 1000 | date:'yyyy-MM-dd HH:mm:ss'}}
+                            </ng-template>
+                        </ngx-datatable-column>
+                        <ngx-datatable-column name="Type" prop="type">
+                            <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
+                                <div [ngSwitch]="row['type']">
+                                    <label class="label label-sm text-uppercase label-primary" *ngSwitchCase="0">{{'LABEL.MANUAL'| translate}}</label>
+                                    <label class="label label-sm text-uppercase label-success" *ngSwitchCase="1">{{'LABEL.WITHDRAW'| translate}}</label>
+                                    <label class="label label-sm text-uppercase" [ngClass]="{'label-warning': selCoin == row['src_coin'], 'label-danger': selCoin != row['src_coin']}" *ngSwitchCase="2">
+                                        {{(selCoin == row['src_coin'] ? 'LABEL.SELL' : 'LABEL.BUY') | translate}}
+                                    </label>
+                                    <label class="label label-sm text-uppercase label-info" *ngSwitchCase="3">{{'LABEL.DEPOSIT'| translate}}</label>
+                                    <label class="label label-sm text-uppercase label-purple" *ngSwitchCase="4">{{'LABEL.FASTBUY'| translate}}</label>
+                                    <label class="label label-sm text-uppercase label-megna" *ngSwitchCase="5">{{'LABEL.BONUS'| translate}}</label>
+                                    <label class="label label-sm text-uppercase label-megna" *ngSwitchCase="6">{{'LABEL.ICO'| translate}}</label>
+                                </div>
+                            </ng-template>
+                        </ngx-datatable-column>
+                        <ngx-datatable-column name="Amount" >
+                            <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
+                                {{(selCoin == row['src_coin'] ? row['src_amount'] : row['dest_amount']) | number:'1.8-8'}}
+                            </ng-template>
+                        </ngx-datatable-column>
+                        <ngx-datatable-column name="Pair">
+                            <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
+                                {{row['type'] == 2 ? (row['src_coin'] + '/' + row['dest_coin']) : ''}}
+                            </ng-template>
+                        </ngx-datatable-column>
+                        <ngx-datatable-column name="Rate">
+                            <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
+                                {{row['type'] == 2 || row['type'] == 4 ? (row['rate'] | number:'1.8-8') : ''}}
+                            </ng-template>
+                        </ngx-datatable-column>
+                        <ngx-datatable-column name="Status">
+                            <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
+                                <label class="label label-sm" [ngClass]="{'label-primary': row['open'] == 1, 'label-success': row['status'] == 1, 'label-warning': row['status']==0, 'label-danger': row['status'] == 2, 'label-info': row['status'] == 3}">
+                                    {{(row['open'] == 1 ? 'LABEL.OPEN' : (row['status'] == 1 ? 'LABEL.SUCCESS' : (row['status'] == 0 ? 'LABEL.PENDING' : (row['status'] == 2 ? 'LABEL.FAILED' : 'LABEL.PROCESSING')))) | translate}}
+                                </label>
+                            </ng-template>
+                        </ngx-datatable-column>
+                        <ngx-datatable-column name="Action">
+                            <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
+                                <button type="button" class="btn btn-sm btn-danger btn-rounded" *ngIf="row['type'] == 0" (click)="deleteManual(row['id'])">
+                                    <i class="fa fa-times"></i>
+                                </button>
+                            </ng-template>
+                        </ngx-datatable-column>
+                    </ngx-datatable>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<modal-dialog [(visible)]="showManualModal" [closable]="false">
+    <form class="form-horizontal">
+        <h2 class="text-center">
+            INPUT AMOUNT
+        </h2>
+
+        <input type="text" class="form-control" style="text-align: center; font-size: 20px;" name="manual_amount" [(ngModel)]="manual_amount">
+
+        <div class="text-center" style="margin-top: 20px;">
+            <button type="button" class="btn btn-primary" (click)="addManual()">ADD</button>
+            <button type="button" class="btn btn-danger" (click)="showManualModal = false">Cancel</button>
+        </div>
+    </form>
+</modal-dialog>

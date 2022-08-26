@@ -1,0 +1,77 @@
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <ul class="nav nav-tabs customtab" role="tablist">
+                    <li class=" nav-item text-center">
+                        <a class="nav-link active" data-toggle="tab" href="#open" role="tab">
+                            <span><b>Open Tickets</b></span>
+                        </a>
+                    </li>
+                    <li class=" nav-item text-center">
+                        <a class="nav-link" data-toggle="tab" href="#close" role="tab">
+                            <span><b>Closed Tickets</b></span>
+                        </a>
+                    </li>
+                </ul>
+
+                <div class="tab-content">
+                    <div class="tab-pane active" id="open" role="tabpanel">
+                        <div class="table-responsive">
+                            <table class="table" id="opentable">
+                                <thead>
+                                <tr>
+                                    <th>{{'TICKET.TICKET_ID' | translate}}</th>
+                                    <th>{{'LABEL.TITLE' | translate}}</th>
+                                    <th>{{'LABEL.LAST_USER' | translate}}</th>
+                                    <th style="width: 200px;">{{'LABEL.LAST_UPDATE' | translate}}</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr *ngFor="let ticket of openTickets" [ngClass]="{'table-active': ticket.last_user == 'Admin'}" (click)="showTicket(ticket)">
+                                    <td>{{ticket.id}}</td>
+                                    <td>{{ticket.title}}</td>
+                                    <td>{{ticket.last_user}}</td>
+                                    <td style="width: 200px;">{{ticket.updated_at | date:'yyyy-MM-dd HH:mm:ss'}}</td>
+                                </tr>
+                                <tr *ngIf="openTickets?.length == 0">
+                                    <td class="text-center" colspan="4">
+                                        {{'TICKET.NO_TICKET_LIST' | translate}}
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="tab-pane" id="close" role="tabpanel">
+                        <div class="table-responsive" >
+                            <table class="table" id="closetable">
+                                <thead>
+                                <tr>
+                                    <th>{{'TICKET.TICKET_ID' | translate}}</th>
+                                    <th>{{'LABEL.TITLE' | translate}}</th>
+                                    <th>{{'LABEL.LAST_USER' | translate}}</th>
+                                    <th style="width: 200px;">{{'LABEL.LAST_UPDATE' | translate}}</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr *ngFor="let ticket of closeTickets" (click)="showTicket(ticket)">
+                                    <td>{{ticket.id}}</td>
+                                    <td>{{ticket.title}}</td>
+                                    <td>{{ticket.last_user}}</td>
+                                    <td style="width: 200px;">{{ticket.updated_at | date:'yyyy-MM-dd HH:mm:ss'}}</td>
+                                </tr>
+                                <tr *ngIf="closeTickets?.length == 0">
+                                    <td class="text-center" colspan="4">
+                                        {{'TICKET.NO_TICKET_LIST' | translate}}
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

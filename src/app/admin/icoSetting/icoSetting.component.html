@@ -1,0 +1,59 @@
+
+<div class="row">
+    <div class="col-md-3">
+        <div class="card">
+            <div class="card-body">
+                <div class="table-responsive pair-table">
+                    <table class="table ">
+                        <thead>
+                        <tr>
+                            <th></th>
+                            <th>{{'LABEL.COIN' | translate}}</th>
+                            <th>{{'LABEL.NAME' | translate}}</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr *ngFor="let coin of coins" [ngClass]="{'active': coin.coin == selCoin}" (click)="onClickCoin(coin)">
+                            <td class="text-center"><i class="fa fa-star"></i></td>
+                            <td>{{coin.coin}}</td>
+                            <td>{{coin.fullname}}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-9">
+        <div class="card">
+            <div class="card-body">
+                <div class="card-title">
+                    <h3>ICO Setting</h3>
+                </div>
+                <!--<form class="form-material">-->
+                    <!--<div class="form-group row">-->
+                        <!--<label class="control-label text-right col-md-3">Phase1 End Date</label>-->
+                        <!--<div class="col-md-9">-->
+                            <!--<input type="text" class="form-control" name="phase1_end_date" [(ngModel)]="icoSetting.phase1_date">-->
+                        <!--</div>-->
+                    <!--</div>-->
+                    <!--<div class="form-group row">-->
+                        <!--<label class="control-label text-right col-md-3">Withdraw Fee</label>-->
+                        <!--<div class="col-md-9">-->
+                            <!--<input type="text" class="form-control" name="withdraw_fee" [(ngModel)]="sysSettings.tl_withdraw_fee">-->
+                        <!--</div>-->
+                    <!--</div>-->
+                    <!--<div class="row">-->
+                        <!--<div class="col-md-3"></div>-->
+                        <!--<div class="col-md-9">-->
+                            <!--<button type="button" class="btn btn-success" (click)="saveTLFee()">-->
+                                <!--UPDATE-->
+                            <!--</button>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                <!--</form>-->
+            </div>
+        </div>
+    </div>
+</div>

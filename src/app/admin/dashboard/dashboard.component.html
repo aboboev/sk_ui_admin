@@ -1,0 +1,99 @@
+<!--<div class="row">-->
+    <!--<div class="col-md-12">-->
+        <!--<h2 class="text-left">-->
+            <!--User Statistics-->
+        <!--</h2>-->
+    <!--</div>-->
+    <!--<div class="col-md-4">-->
+        <!--<div class="card">-->
+            <!--<div class="card-body">-->
+                <!--<div class="d-flex flex-row">-->
+                    <!--<div class="round round-lg align-self-center round-warning"><i class="mdi mdi-account-multiple"></i></div>-->
+                    <!--<div class="m-l-10 align-self-center">-->
+                        <!--<h3 class="m-b-0 font-light">{{usersts.total_user}}</h3>-->
+                        <!--<h5 class="text-muted m-b-0">Total Users</h5></div>-->
+                <!--</div>-->
+            <!--</div>-->
+        <!--</div>-->
+    <!--</div>-->
+    <!--<div class="col-md-4">-->
+        <!--<div class="card">-->
+            <!--<div class="card-body">-->
+                <!--<div class="d-flex flex-row">-->
+                    <!--<div class="round round-lg align-self-center round-info"><i class="mdi mdi-account-star-variant"></i></div>-->
+                    <!--<div class="m-l-10 align-self-center">-->
+                        <!--<h3 class="m-b-0 font-light">{{usersts.confirmed_user}}</h3>-->
+                        <!--<h5 class="text-muted m-b-0">Confirmed Users</h5></div>-->
+                <!--</div>-->
+            <!--</div>-->
+        <!--</div>-->
+    <!--</div>-->
+    <!--<div class="col-md-4">-->
+        <!--<div class="card">-->
+            <!--<div class="card-body">-->
+                <!--<div class="d-flex flex-row">-->
+                    <!--<div class="round round-lg align-self-center round-danger"><i class="mdi mdi-account-alert"></i></div>-->
+                    <!--<div class="m-l-10 align-self-center">-->
+                        <!--<h3 class="m-b-0 font-light">{{usersts.unconfirmed_user}}</h3>-->
+                        <!--<h5 class="text-muted m-b-0">Unconfirmed Users</h5></div>-->
+                <!--</div>-->
+            <!--</div>-->
+        <!--</div>-->
+    <!--</div>-->
+<!--</div>-->
+
+<div class="row" *ngFor="let sts of coinsts">
+    <div class="col-md-12">
+        <h2 class="text-left">
+            {{sts.coin}} Statistics
+        </h2>
+    </div>
+    <div class="col-md-3">
+        <div class="card">
+            <div class="card-body">
+                <div class="d-flex flex-row">
+                    <div><img src="assets/images/coin/{{sts.coin}}.png" style="width: 60px;"></div>
+                    <div class="m-l-10 align-self-center">
+                        <h3 class="m-b-0 font-light">{{sts.deposit_amount | number:'1.8-8'}}</h3>
+                        <h5 class="text-muted m-b-0">Total Deposit</h5></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card">
+            <div class="card-body">
+                <div class="d-flex flex-row">
+                    <div><img src="assets/images/coin/{{sts.coin}}.png" style="width: 60px;"></div>
+                    <div class="m-l-10 align-self-center">
+                        <h3 class="m-b-0 font-light">{{sts.withdraw_amount | number:'1.8-8'}}</h3>
+                        <h5 class="text-muted m-b-0">Total Withdraw</h5></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card">
+            <div class="card-body">
+                <div class="d-flex flex-row">
+                    <div><img src="assets/images/coin/{{sts.coin}}.png" style="width: 60px;"></div>
+                    <div class="m-l-10 align-self-center">
+                        <h3 class="m-b-0 font-light">{{sts.balance | number:'1.8-8'}}</h3>
+                        <h5 class="text-muted m-b-0">Market Balance</h5></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card">
+            <div class="card-body">
+                <div class="d-flex flex-row">
+                    <div><img src="assets/images/coin/{{sts.coin}}.png" style="width: 60px;"></div>
+                    <div class="m-l-10 align-self-center">
+                        <h3 class="m-b-0 font-light">{{sts.profit | number:'1.8-8'}}</h3>
+                        <h5 class="text-muted m-b-0">Total Profit</h5></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

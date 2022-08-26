@@ -1,0 +1,63 @@
+
+<div class="row">
+    <div class="col-md-3">
+        <div class="card">
+            <div class="card-body">
+                <div class="table-responsive pair-table">
+                    <table class="table ">
+                        <thead>
+                        <tr>
+                            <th></th>
+                            <th>{{'LABEL.COIN' | translate}}</th>
+                            <th>{{'LABEL.NAME' | translate}}</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr *ngFor="let coin of coins" [ngClass]="{'active': coin.coin == selCoin}" (click)="onClickCoin(coin)">
+                            <td class="text-center"><i class="fa fa-star"></i></td>
+                            <td>{{coin.coin}}</td>
+                            <td>{{coin.fullname}}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-9">
+        <div class="card">
+            <div class="card-body">
+                <div class="card-title">
+                    <h3>Deposit History</h3>
+                </div>
+                <div class="table-responsive m-t-20">
+                    <table id="tlhistorytable" class="table table-bordered">
+                        <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>DATETIME</th>
+                            <th>USERNAME</th>
+                            <th>AMOUNT</th>
+                            <th>FEE</th>
+                            <th>TXID</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr *ngFor="let tx of trans; let i=index;">
+                            <td>{{i + 1}}</td>
+                            <td>{{tx.datetime | date:'yyyy-MM-dd HH:mm:ss'}}</td>
+                            <td>{{tx.username}}</td>
+                            <td>{{tx.dest_amount | number:'1.8-8'}}</td>
+                            <td>{{tx.fee | number:'1.8-8'}}</td>
+                            <td>
+                                <a target="_blank" href="{{selCoinInfo.explorer_url + tx.txid}}" *ngIf="selCoinInfo.explorer_url != null && selCoinInfo.explorer_url != ''">{{tx.txid}}</a>
+                                <span *ngIf="selCoinInfo.explorer_url == null || selCoinInfo.explorer_url == ''">{{tx.txid}}</span>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

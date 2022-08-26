@@ -1,0 +1,71 @@
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-body">
+                <div class="card-title">
+                    <h3>Coin Pairs</h3>
+                </div>
+                <div class="table-responsive m-t-20">
+                    <table id="tlhistorytable" class="table table-bordered">
+                        <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Pairs</th>
+                            <th>Action</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr *ngFor="let pair of pairs; let i=index;">
+                            <td>{{i + 1}}</td>
+                            <td>{{pair.coin + '/' + pair.market_coin}}</td>
+                            <td>
+                                <button type="button" class="btn btn-success btn-round" (click)="unsuspend(pair)" *ngIf="pair.suspended == 1">
+                                    Unsuspend
+                                </button>
+                                <button type="button" class="btn btn-danger btn-round" (click)="suspend(pair)" *ngIf="pair.suspended == 0">
+                                    Suspend
+                                </button>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-body">
+                <div class="card-title">
+                    <h3>IEO Coin Pairs</h3>
+                </div>
+                <div class="table-responsive m-t-20">
+                    <table id="ieopairstable" class="table table-bordered">
+                        <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>IEO Pairs</th>
+                            <th>Action</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr *ngFor="let pair of ieopairs; let i=index;">
+                            <td>{{i + 1}}</td>
+                            <td>{{pair.coin + '/' + pair.market_coin}}</td>
+                            <td>
+                                <button type="button" class="btn btn-success btn-round" (click)="ieounsuspend(pair)" *ngIf="pair.suspended == 1">
+                                    Unsuspend
+                                </button>
+                                <button type="button" class="btn btn-danger btn-round" (click)="ieosuspend(pair)" *ngIf="pair.suspended == 0">
+                                    Suspend
+                                </button>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

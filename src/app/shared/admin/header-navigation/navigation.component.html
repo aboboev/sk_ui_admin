@@ -1,0 +1,101 @@
+<header class="topbar">
+    <nav class="navbar top-navbar navbar-expand-md navbar-light">
+
+        <div class="navbar-header">
+            <a class="navbar-brand">
+                <img src="/assets/images/logo.png" alt="homepage"/>
+            </a>
+        </div>
+
+        <div class="navbar-collapse text-right">
+            <div class="navbar-nav mr-auto mt-md-0">
+            </div>
+            <ul class="navbar-nav my-lg-0">
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle text-muted waves-effect waves-dark" href=""
+                       data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Admin Panel
+                        <i class="fa fa-caret-down"></i>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-right scale-up">
+                        <ul class="dropdown-user">
+                            <!--<li><a href="#"><i class="ti-settings"></i><span class="float-right">Security Settings</span> </a></li>-->
+                            <li><a (click)="onChangePwd()"><i class="fa fa-user-secret"></i><span class="float-right">{{'HEADER.CHANGE_PASSWORD' | translate}}</span> </a></li>
+                            <li role="separator" class="divider"></li>
+                            <li (click)="logout()"><a href="#"><i class="fa fa-power-off"></i><span class="float-right">{{'HEADER.LOGOUT' | translate}}</span></a></li>
+                        </ul>
+                    </div>
+                </li>
+                <!-- ============================================================== -->
+                <!-- Language -->
+                <!-- ============================================================== -->
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle text-muted waves-effect waves-dark" href=""
+                       data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <i class="flag-icon {{currentLang.flagIcon}}"></i>
+                        <span class="lang">{{currentLang.shortName}}</span>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-right scale-up">
+                        <a class="dropdown-item" *ngFor="let lang of translator.getLanguages()" (click)="setLang(lang.code)">
+                            <i class="flag-icon {{lang.flagIcon}}"></i>
+                            {{lang.text}}
+                        </a>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </nav>
+</header>
+<modal-dialog [(visible)]="showPwdModal">
+    <form class="form-horizontal">
+        <div class="row">
+            <div class="col-md-12">
+                <form class="form-horizontal form-material" id="signupform" [formGroup]="changepwd">
+                    <h3 class="box-title m-b-20">{{'HEADER.CHANGE_PASSWORD' | translate}}</h3><div class="form-group ">
+                    <div class="col-xs-12">
+                        <input type="password"
+                               name="curPassword"
+                               class="form-control"
+                               formControlName="curPassword"
+                               placeholder="{{'HEADER.CURRENT_PASSWORD' | translate}}..."
+                               [(ngModel)]="pwd.curPassword">
+                        <app-field-error-display [displayError]="validate.isFieldValid(changepwd, 'curPassword')" errorMsg="{{'MSG.CURPWD_ERR' | translate}}">
+                        </app-field-error-display>
+                    </div>
+                </div>
+                    <div class="form-group ">
+                        <div class="col-xs-12">
+                            <input type="password"
+                                   name="password"
+                                   class="form-control"
+                                   formControlName="password"
+                                   placeholder="{{'HEADER.NEW_PASSWORD' | translate}}..."
+                                   [(ngModel)]="pwd.password">
+                            <app-field-error-display [displayError]="validate.isFieldValid(changepwd, 'password')" errorMsg="{{'MSG.REQUIRE_PWD_ERR' | translate}}">
+                            </app-field-error-display>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-xs-12">
+                            <input type="password"
+                                   class="form-control"
+                                   name="confirmPassword"
+                                   formControlName="confirmPassword"
+                                   placeholder="{{'HEADER.RETYPE_PASSWORD' | translate}}...">
+                            <app-field-error-display
+                                    [displayError]="validate.isFieldValid(changepwd, 'confirmPassword')" errorMsg="{{'MSG.NOTMATCH_PWD_ERR' | translate}}">
+                            </app-field-error-display>
+                        </div>
+                    </div>
+
+                    <div class="form-group text-center">
+                        <div class="col-xs-12">
+                            <button class="btn btn-info waves-effect waves-light" (click)="changePwd()">{{'BUTTON.CHANGE' | translate}}</button>
+                            <button class="btn btn-danger waves-effect waves-light" (click)="showPwdModal = false">{{'BUTTON.CLOSE' | translate}}</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </form>
+</modal-dialog>

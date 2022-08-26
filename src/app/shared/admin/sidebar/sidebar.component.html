@@ -1,0 +1,30 @@
+<aside class="left-sidebar">
+    <div class="scroll-sidebar">
+        <nav class="sidebar-nav">
+            <ul id="sidebarnav">
+                <li routerLinkActive="active" *ngFor="let menuitem of menuItems">
+                    <!--If is a single link-->
+                    <a [routerLink]="[menuitem.path]" *ngIf="menuitem.type === 'link'">
+                        <i class="mdi {{menuitem.icon_class}}"></i>{{menuitem.title | translate}}
+                    </a>
+                    <!--If it have a submenu-->
+
+                    <a class="has-arrow" href="#" aria-expanded="false" *ngIf="menuitem.type === 'sub'">
+                        <i class="mdi mdi-gauge"></i><span class="hide-menu">Dashboard </span>
+                    </a>
+
+                    <!--Display the submenu items-->
+                    <ul aria-expanded="false" class="collapse" *ngIf="menuitem.type === 'sub'">
+                        <li routerLinkActive="active" *ngFor="let childitem of menuitem.children">
+                            <a [routerLink]="[menuitem.path, childitem.path]">
+                                {{childitem.title}}
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </nav>
+        <!-- End Sidebar navigation -->
+    </div>
+    <!-- End Sidebar scroll-->
+</aside>

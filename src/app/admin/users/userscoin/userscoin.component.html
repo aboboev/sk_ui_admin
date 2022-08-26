@@ -1,0 +1,129 @@
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <ul class="nav nav-pills">
+                    <li class=" nav-item text-center" *ngFor="let coin of coins" (click)="onClickCoin($event, coin.coin)">
+                        <a class="nav-link" [ngClass]="{'active': coin.coin == selCoin}" ><span><b>{{coin.coin}}</b></span></a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <!-- Column -->
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-body">
+                <div class="d-flex flex-row">
+                    <div class="round round-lg align-self-center round-warning"><i
+                            class="mdi mdi-account-multiple"></i></div>
+                    <div class="m-l-10 align-self-center">
+                        <h3 class="m-b-0 font-light">{{total.user_count | number:'1.0-0'}}</h3>
+                        <h5 class="text-muted m-b-0">Total Users</h5></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-body">
+                <div class="d-flex flex-row">
+                    <div class="round round-lg align-self-center round-info"><i class="mdi mdi-wallet"></i>
+                    </div>
+                    <div class="m-l-10 align-self-center">
+                        <h3 class="m-b-0 font-light">{{total.balance | number:'1.8-8'}} {{selCoin}}</h3>
+                        <h5 class="text-muted m-b-0">Total User Balance</h5></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-body">
+                <div class="d-flex flex-row">
+                    <div class="round round-lg align-self-center round-danger"><i class="mdi mdi-wallet"></i>
+                    </div>
+                    <div class="m-l-10 align-self-center">
+                        <h3 class="m-b-0 font-light">{{total.pending | number:'1.8-8'}} {{selCoin}}</h3>
+                        <h5 class="text-muted m-b-0">Pending Withdraw</h5></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <table-loader *ngIf="loading"></table-loader>
+            <div class="card-body">
+                <div class="card-title">
+                    <h3 class="float-left">User List</h3>
+                    <form class="form-material">
+                        <input type='text' class="float-right form-control" style='width:300px;' placeholder='Filter...' (keyup)='updateFilter($event)' />
+                    </form>
+                </div>
+                <div class="clear"></div>
+                <div class="table-responsive m-t-20">
+                    <ngx-datatable
+                            #table
+                            class="material"
+                            [rows]="users"
+                            [columnMode]="'force'"
+                            [headerHeight]="50"
+                            [footerHeight]="50"
+                            [rowHeight]="'auto'"
+                            [limit]="10">
+
+                        <ngx-datatable-column name="EMAIL" ></ngx-datatable-column>
+                        <ngx-datatable-column name="DEPOSIT"  prop="deposit_amount">
+                            <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
+                                {{row['deposit_amount'] | number:'1.8-8'}}
+                            </ng-template>
+                        </ngx-datatable-column>
+                        <ngx-datatable-column name="BUY"  prop="buy_amount">
+                            <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
+                                {{row['buy_amount'] | number:'1.8-8'}}
+                            </ng-template>
+                        </ngx-datatable-column>
+                        <ngx-datatable-column name="SELL"  prop="sell_amount">
+                            <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
+                                {{row['sell_amount'] | number:'1.8-8'}}
+                            </ng-template>
+                        </ngx-datatable-column>
+                        <ngx-datatable-column name="WITHDRAW" prop="withdraw_amount">
+                            <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
+                                {{row['withdraw_amount'] | number:'1.8-8'}}
+                            </ng-template>
+                        </ngx-datatable-column>
+                        <ngx-datatable-column name="PENDING"  prop="pending_amount">
+                            <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
+                                {{row['pending_amount'] | number:'1.8-8'}}
+                            </ng-template>
+                        </ngx-datatable-column>
+                        <ngx-datatable-column name="MANUAL"  prop="manual_amount">
+                            <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
+                                {{row['manual_amount'] | number:'1.8-8'}}
+                            </ng-template>
+                        </ngx-datatable-column>
+                        <ngx-datatable-column name="BALANCE" prop="balance_amount">
+                            <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
+                                {{row['balance_amount'] | number:'1.8-8'}}
+                            </ng-template>
+                        </ngx-datatable-column>
+                        <ngx-datatable-column name="ACTION">
+                            <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
+                                <button type="button" class="btn btn-success btn-round" (click)="onDetail(row['id'])">
+                                    <i class="mdi mdi-view-dashboard"></i>Detail
+                                </button>
+                            </ng-template>
+                        </ngx-datatable-column>
+                    </ngx-datatable>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

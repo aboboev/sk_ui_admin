@@ -1,0 +1,23 @@
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <ul class="nav nav-pills">
+                    <li class=" nav-item text-center">
+                        <a [routerLink]="['info']" class="nav-link" routerLinkActive="active">
+                            <span><b><i class="mdi mdi-account-multiple"></i> Users</b></span>
+                        </a>
+                    </li>
+
+                    <li class=" nav-item text-center">
+                        <a [routerLink]="['coin']" class="nav-link" routerLinkActive="active">
+                            <span><b><i class="mdi mdi-account-multiple"></i> Coin</b></span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<router-outlet></router-outlet>

@@ -1,0 +1,116 @@
+<div class="row">
+    <!-- Column -->
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-body">
+                <div class="d-flex flex-row">
+                    <div class="round round-lg align-self-center round-warning"><i class="mdi mdi-account-multiple"></i></div>
+                    <div class="m-l-10 align-self-center">
+                        <h3 class="m-b-0 font-light">{{total.user_count}}</h3>
+                        <h5 class="text-muted m-b-0">Total Users</h5></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-body">
+                <div class="d-flex flex-row">
+                    <div class="round round-lg align-self-center round-info"><i class="mdi mdi-account-star-variant"></i></div>
+                    <div class="m-l-10 align-self-center">
+                        <h3 class="m-b-0 font-light">{{total.confirmed_count}}</h3>
+                        <h5 class="text-muted m-b-0">Confirmed Users</h5></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-body">
+                <div class="d-flex flex-row">
+                    <div class="round round-lg align-self-center round-danger"><i class="mdi mdi-account-alert"></i></div>
+                    <div class="m-l-10 align-self-center">
+                        <h3 class="m-b-0 font-light">{{total.unconfirmed_count}}</h3>
+                        <h5 class="text-muted m-b-0">Unconfirmed Users</h5></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="card-title">
+                    <h3 class="float-left">User List</h3>
+                    <form class="form-material">
+                        <input type='text' class="float-right form-control" style='width:300px;' placeholder='Filter...' (keyup)='updateFilter($event)' />
+                    </form>
+                </div>
+                <div class="clearfix"></div>
+                <div class="table-responsive m-t-20">
+
+                    <ngx-datatable
+                            #table
+                            class="material"
+                            [rows]="users"
+                            [columnMode]="'force'"
+                            [headerHeight]="50"
+                            [footerHeight]="50"
+                            [rowHeight]="'auto'"
+                            [limit]="10">
+                        <!--<ngx-datatable-column name="#" >-->
+                            <!--<ng-template let-rowIndex="rowIndex" let-row="row" ngx-datatable-cell-template>-->
+                                <!--{{rowIndex}}-->
+                            <!--</ng-template>-->
+                        <!--</ngx-datatable-column>-->
+                        <ngx-datatable-column name="EMAIL" ></ngx-datatable-column>
+                        <ngx-datatable-column name="NAME" ></ngx-datatable-column>
+                        <ngx-datatable-column name="PHONE NUMBER" prop="phone_number">
+                            <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
+                                {{row['phone_number']}}
+                            </ng-template>
+                        </ngx-datatable-column>
+                        <ngx-datatable-column name="CONFIRMED">
+                            <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
+                                <div [ngSwitch]="row['verify_status']">
+                                    <label class="label label-sm label-info" *ngSwitchCase="1">
+                                        PENDING
+                                    </label>
+                                    <label class="label label-sm label-danger" *ngSwitchCase="2">
+                                        CANCELED
+                                    </label>
+                                    <label class="label label-sm label-success" *ngSwitchCase="3">
+                                        VERIFIED
+                                    </label>
+                                    <label class="label label-sm label-warning" *ngSwitchDefault>
+                                        NO VERIFIED
+                                    </label>
+                                </div>
+                            </ng-template>
+                        </ngx-datatable-column>
+                        <ngx-datatable-column name="CREATED AT" prop="created_at">
+                            <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
+                                {{row['created_at'] | date:'yyyy-MM-dd'}}
+                            </ng-template>
+                        </ngx-datatable-column>
+                        <ngx-datatable-column name="ACTION">
+                            <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
+                                <button type="button" class="btn btn-success" (click)="onDetail(row['id'])">
+                                    <i class="mdi mdi-view-dashboard"></i>Detail
+                                </button>
+                                <button type="button" class="btn btn-danger" (click)="onDelete(row['id'])">
+                                    Delete
+                                </button>
+                                <button type="button" class="btn btn-info" (click)="onConfirm(row['id'])" *ngIf="row['confirmed'] != 1">
+                                    Confirm Email
+                                </button>
+                            </ng-template>
+                        </ngx-datatable-column>
+                    </ngx-datatable>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

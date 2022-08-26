@@ -1,0 +1,32 @@
+.topbar {
+    position: fixed;
+    top: 0px;
+    width: 100%;
+    .top-navbar {
+        max-width: 100%;
+        .navbar-header {
+            position: static;
+        }
+    }
+}
+.navbar-header {
+    height: 70px;
+    img {
+        height: 45px;
+    }
+}
+.lang {
+    font-size: 15px;
+}
+
+.currency-value {
+    float: right;
+}
+
+.scale-up-left div {
+    line-height: 2.5rem;
+}
+
+li a {
+    cursor: pointer;
+}

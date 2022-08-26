@@ -1,0 +1,39 @@
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="card-title">
+                    <h3>Wallet Statistics</h3>
+                </div>
+                <div class="table-responsive m-t-20">
+                    <table class="table table-bordered">
+                        <thead>
+                        <tr>
+                            <th>#</th>
+                            <!--<th>EMAIL</th>-->
+                            <th>Coin</th>
+                            <th>Total User Balance</th>
+                            <th>Opening Balance</th>
+                            <th>Wallet Balance</th>
+                            <th>User-Opening-Wallet Balance</th>
+                            <!--<th>Estimated BTC</th>-->
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr *ngFor="let data of walletsts; let i=index;">
+                            <td>{{i + 1}}</td>
+                            <!--<twithdrawpendingding.email}}</td>-->
+                            <td>{{data.coin}}</td>
+                            <td>{{data.user_amount | number:'1.8-8'}}</td>
+                            <td>{{data.open_amount | number:'1.8-8'}}</td>
+                            <td>{{data.wallet_amount | number:'1.8-8'}}</td>
+                            <td>{{data.difference_amount | number:'1.8-8'}}</td>
+                            <!--<td>{{data.difference | number:'1.8-8'}}</td>-->
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

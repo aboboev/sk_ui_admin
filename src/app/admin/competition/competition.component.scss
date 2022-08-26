@@ -1,0 +1,57 @@
+.pair-table {
+  table {
+    td:first-child, th:first-child {
+      padding-left: 5px;
+    }
+    td:last-child, th:last-child {
+      padding-right: 5px;
+    }
+  }
+}
+
+.coin-pair {
+  // border: 1px solid #efefef;
+  .tabs {
+    border-bottom: 2px solid #009efb;
+    ul {
+      padding: 5px 0 0 0;
+      height: 30px;
+      margin: 0;
+      li {
+        cursor: pointer;
+        font-size: 13px;
+        list-style: none;
+        display: inline-block;
+        line-height: 25px;
+        width: 38px;
+        background-color: #b1b1b1;
+        color: black;
+
+        &.active {
+          color: white;
+          // background: rgba(0, 158, 251, 0.16);
+          background-color: #009efb;
+        }
+      }
+    }
+  }
+
+  .pair-table {
+    max-height: 370px;
+    border: 1px solid #efefef;
+    table {
+      td:first-child, th:first-child {
+        padding-left: 0;
+      }
+      tr:nth-child(2n) {
+        background-color: #fafafa;
+      }
+      th:nth-child(4), td:nth-child(4) {
+        padding-right: 10px;
+      }
+      tr:hover {
+        background-color: #e6e6e6;
+      }
+    }
+  }
+}

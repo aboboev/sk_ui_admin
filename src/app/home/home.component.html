@@ -1,0 +1,202 @@
+<div class="home">
+    <div class="home-header">
+        <div class="container">
+            <div class="row" style="clear: both;">
+                <div class="col-sm-12 col-md-4 title">
+                </div>
+                <div class="col-sm-12 col-md-4">
+                    <div class="sign-form">
+                        <div>
+                            <form class="form-horizontal" id="loginform" [formGroup]="login">
+                                <div class="form-group row">
+                                    <div class="col-md-12">
+                                        <input type="email" name="email" class="form-control" formControlName="email"
+                                               [(ngModel)]="loginInfo.email"
+                                               placeholder="{{'HOME.EMAIL_ADDRESS' | translate}}">
+                                        <app-field-error-display [displayError]="validate.isFieldValid(login, 'email')"
+                                                                 errorMsg="{{'HOME.EMAIL_VALIDATION' | translate}}">
+                                        </app-field-error-display>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <div class="col-md-12">
+                                        <input type="password"
+                                               name="password"
+                                               class="form-control"
+                                               formControlName="password"
+                                               [(ngModel)]="loginInfo.password"
+                                               placeholder="{{'HOME.PASSWORD' | translate}}">
+                                        <app-field-error-display
+                                                [displayError]="validate.isFieldValid(login, 'password')"
+                                                errorMsg="{{'HOME.PASSWORD_VALIDATION' | translate}}">
+                                        </app-field-error-display>
+                                    </div>
+                                </div>
+
+                                <div class="row m-t-20">
+                                    <div class="btn-signup-wrapper col-md-12">
+                                        <button class="text-white text-uppercase" (click)="onLogin()">
+                                            {{'HOME.SIGN_IN_BUTTON' | translate}}
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<modal-dialog [(visible)]="showMailModal" [closable]="false">
+    <form class="form-horizontal">
+        <h2 class="text-center">
+            {{'HOME.INPUT_YOUR_EMAIL' | translate}}
+        </h2>
+
+        <input type="text" class="form-control" style="text-align: center; font-size: 20px;" name="confirm_email"
+               [(ngModel)]="confirm_email">
+
+        <div class="text-center" style="margin-top: 20px;">
+            <button type="button" class="btn btn-primary" (click)="submitEmail()">{{'BUTTON.SUBMIT' | translate}}
+            </button>
+            <button type="button" class="btn btn-default" (click)="showMailModal = !showMailModal">{{'BUTTON.CANCEL' |
+                translate}}
+            </button>
+        </div>
+    </form>
+</modal-dialog>
+
+<modal-dialog [(visible)]="showG2FModal" [closable]="false">
+    <form class="form-horizontal">
+        <h2 class="text-center">
+            {{'LABEL.ENTER_G2FCDOE' | translate}}
+        </h2>
+
+        <input type="text" class="form-control" style="text-align: center; font-size: 20px;" name="g2f_code"
+               [(ngModel)]="g2f_code">
+
+        <div class="text-center" style="margin-top: 20px;">
+            <button type="button" class="btn btn-primary" (click)="submitG2fCode()">{{'BUTTON.SUBMIT' | translate}}
+            </button>
+            <button type="button" class="btn btn-default" (click)="showG2FModal = !showG2FModal">{{'BUTTON.CANCEL' | translate}}
+            </button>
+        </div>
+    </form>
+</modal-dialog>
+
+<modal-dialog [(visible)]="showSMSModal" [closable]="false">
+    <form class="form-horizontal">
+        <h2 class="text-center">
+            {{'LABEL.ENTER_SMSCDOE' | translate}}
+        </h2>
+
+        <input type="text" class="form-control" style="text-align: center; font-size: 20px;" name="sms_code"
+               [(ngModel)]="sms_code">
+
+        <div class="text-center" style="margin-top: 20px;">
+            <button type="button" class="btn btn-primary" (click)="submitSMSCode()">{{'BUTTON.SUBMIT' | translate}}
+            </button>
+            <button type="button" class="btn btn-default" (click)="showSMSModal = !showSMSModal">{{'BUTTON.CANCEL' |
+                translate}}
+            </button>
+        </div>
+    </form>
+</modal-dialog>
+
+
+<modal-dialog [(visible)]="showEmailModal" [closable]="false">
+    <form class="form-horizontal">
+        <h2 class="text-center">
+            {{'LABEL.ENTER_EMAILCDOE' | translate}}
+        </h2>
+
+        <input type="text" class="form-control" style="text-align: center; font-size: 20px;" name="email_code"
+               [(ngModel)]="email_code">
+
+        <div class="text-center" style="margin-top: 20px;">
+            <button type="button" class="btn btn-primary" (click)="submitEmailCode()">{{'BUTTON.SUBMIT' | translate}}
+            </button>
+            <button type="button" class="btn btn-default" (click)="showEmailModal = !showEmailModal">{{'BUTTON.CANCEL' |
+                translate}}
+            </button>
+        </div>
+    </form>
+</modal-dialog>
+
+<modal-dialog [(visible)]="showSelectModeModal" [closable]="false">
+    <form class="form-horizontal">
+        <h2 class="text-center">
+            {{'LABEL.SELECT_2FMODE' | translate}}
+        </h2>
+
+        <div class="row m-t-30">
+            <div class="col-md-5 select-mode" [ngClass]="{'select-mode-active': selectedMode == 'g2f'}"
+                 (click)="selectedMode = 'g2f';">
+                <i class="fa fa-mobile-phone"></i> {{'LABEL.G2FMODE' | translate}}
+            </div>
+            <div class="col-md-3 select-mode" [ngClass]="{'select-mode-active': selectedMode == 'sms'}"
+                 (click)="selectedMode = 'sms';">
+                <i class="fa fa-envelope"></i> {{'LABEL.SMSMODE' | translate}}
+            </div>
+            <div class="col-md-4 select-mode" [ngClass]="{'select-mode-active': selectedMode == 'email'}"
+                 (click)="selectedMode = 'email';">
+                <i class="fa fa-envelope"></i> {{'LABEL.EMAILMODE' | translate}}
+            </div>
+        </div>
+
+        <div class="text-center" style="margin-top: 30px;">
+            <button type="button" class="btn btn-primary" (click)="onSelectMode()">{{'BUTTON.SUBMIT' | translate}}
+            </button>
+            <button type="button" class="btn btn-default" (click)="showSelectModeModal = !showSelectModeModal">
+                {{'BUTTON.CANCEL' | translate}}
+            </button>
+        </div>
+    </form>
+</modal-dialog>
+
+<modal-dialog [(visible)]="showG2FEnableModal" [closable]="false">
+    <form class="form-horizontal">
+
+        <div class="row">
+            <div class="col-md-6">
+                <img *ngIf="g2f_security_code != ''" style="width: 200px; height: 200px;"
+                     src="https://chart.googleapis.com/chart?chs=200x200&chld=M|0&cht=qr&chl=otpauth://totp/sistemkoin.com:{{user.email}}?secret={{g2f_security_code}}&issuer=sistemkoin.com"/>
+            </div>
+
+            <div class="col-md-6">
+                <div class="row m-t-20">
+                    <!--<div class="form-group col-md-12">-->
+                        <!--<input type="text" class="form-control" [(ngModel)]="g2f_code" name="g2f_code"-->
+                               <!--placeholder="{{'LABEL.ENTER_G2FCDOE' | translate}}">-->
+                    <!--</div>-->
+                    <div class="col-md-12 m-t-40">
+                        <button type="button" class="btn btn-primary" (click)="enableG2F()">{{'BUTTON.NEXT' | translate}}</button>
+                        <button type="button" class="btn btn-default" (click)="showG2FEnableModal = !showG2FEnableModal">
+                            {{'BUTTON.CANCEL' | translate}}
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</modal-dialog>
+
+<modal-dialog [(visible)]="showSMSEnableModal" [closable]="false">
+    <form class="form-horizontal">
+
+        <div class="row">
+            <div class="form-group col-md-12">
+                <input type="tel" name="phone" id="sms_phone" class="form-control" [(ngModel)]="phone_number">
+            </div>
+        </div>
+
+        <div class="text-center" style="margin-top: 30px;">
+            <button type="button" class="btn btn-primary" (click)="sendSMS()">{{'BUTTON.SEND' | translate}}</button>
+            <button type="button" class="btn btn-default" (click)="showSMSEnableModal = !showSMSEnableModal">
+                {{'BUTTON.CANCEL' | translate}}
+            </button>
+        </div>
+    </form>
+</modal-dialog>

@@ -1,0 +1,132 @@
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="card-title">
+                    <h3>Pending List</h3>
+                </div>
+                <div class="table-responsive m-t-20">
+                    <table id="users" class="table table-bordered">
+                        <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>EMAIL</th>
+                            <th>NAME</th>
+                            <th>CONFIRMED</th>
+                            <th>CREATED AT</th>
+                            <th>ACTION</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr *ngFor="let user of users; let i=index;">
+                            <td>{{i + 1}}</td>
+                            <td>{{user.email}}</td>
+                            <td>{{user.name}}</td>
+                            <td [ngSwitch]="user.verify_status">
+                                <label class="label label-sm label-info" *ngSwitchCase="1">
+                                    PENDING
+                                </label>
+                                <label class="label label-sm label-danger" *ngSwitchCase="2">
+                                    CANCELED
+                                </label>
+                                <label class="label label-sm label-success" *ngSwitchCase="3">
+                                    VERIFIED
+                                </label>
+                                <label class="label label-sm label-warning" *ngSwitchDefault>
+                                    NO VERIFIED
+                                </label>
+                            </td>
+                            <td>{{user.created_at | date:'yyyy-MM-dd'}}</td>
+                            <td>
+                                <button type="button" class="btn btn-success btn-round" (click)="onDetail(user)" *ngIf="user.verify_status == 1">
+                                    <i class="mdi mdi-view-dashboard"></i>Detail
+                                </button>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row" *ngIf="selected">
+    <!-- Column -->
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-body">
+                <form class="form-material">
+                    <div class="form-group row">
+                        <label class="control-label text-right col-md-3">Email</label>
+                        <div class="col-md-9">
+                            <input type="text" class="form-control" name="email" value="{{selectedUser.email}}" readonly>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="control-label text-right col-md-3">First Name</label>
+                        <div class="col-md-9">
+                            <input type="text" class="form-control" name="name" value="{{selectedUser.firstname}}" readonly>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="control-label text-right col-md-3">SurName</label>
+                        <div class="col-md-9">
+                            <input type="text" class="form-control" name="name" value="{{selectedUser.surname}}" readonly>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="control-label text-right col-md-3">Phone Number</label>
+                        <div class="col-md-9">
+                            <input type="text" class="form-control" name="name" value="{{selectedUser.phone_number}}" readonly>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="control-label text-right col-md-3">Address</label>
+                        <div class="col-md-9">
+                            <input type="text" class="form-control" name="name" value="{{selectedUser.address}}" readonly>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="control-label text-right col-md-3">Verify Type</label>
+                        <div class="col-md-9">
+                            <label>
+                                {{selectedUser.verify_type == 1 ? 'ID Card' : (selectedUser.verify_type == 2 ? 'Passport' : 'Driving License')}}
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group row" *ngIf="selectedUser.verify_type > 0">
+                        <label class="control-label text-right col-md-3">ID Card Number</label>
+                        <div class="col-md-9">
+                            <input type="text" class="form-control" name="name" value="{{selectedUser.idcard_number}}" readonly>
+                        </div>
+                    </div>
+                    <div class="form-group row" *ngIf="selectedUser.verify_type > 0">
+                        <div class="col-md-3"></div>
+                        <div class="col-md-4">
+                            <a target="_blank" class="image-popup-no-margins" href="{{selectedUser.idcard_url}}" title="This image fits only horizontally."> <img src="{{selectedUser.idcard_url}}" alt="image" class="img-responsive" /> </a>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="control-label text-right col-md-3">Note</label>
+                        <div class="col-md-9">
+                            <textarea class="form-control" name="note" rows=5 [(ngModel)]="selectedUser.note"></textarea>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-3"></div>
+                        <div class="col-md-9">
+                            <button type="button" class="btn btn-success" (click)="onVerify()">
+                                Verify
+                            </button>
+                            <button type="button" class="btn btn-danger" (click)="onReject()">
+                                Reject
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

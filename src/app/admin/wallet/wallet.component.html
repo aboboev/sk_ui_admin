@@ -1,0 +1,299 @@
+
+<div class="row">
+    <div class="col-md-3">
+        <div class="card">
+            <div class="card-body">
+                <div class="table-responsive pair-table">
+                    <table class="table ">
+                        <thead>
+                        <tr>
+                            <th></th>
+                            <th>{{'LABEL.COIN' | translate}}</th>
+                            <th>{{'LABEL.NAME' | translate}}</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr *ngFor="let coin of coins" [ngClass]="{'active': coin.coin == selCoin}" (click)="onClickCoin(coin)">
+                            <td class="text-center"><i class="fa fa-star"></i></td>
+                            <td>{{coin.coin}}</td>
+                            <td>{{coin.fullname}}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-9" *ngIf="selCoinInfo.is_crypto == 0">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="card-title">
+                            <h3>MAIN IBAN CODE</h3>
+                        </div>
+                        <div>
+                            <button type="button" class="btn btn-success" (click)="showBankAddModal = true">
+                                ADD IBAN CODE
+                            </button>
+                        </div>
+                        <div class="table-responsive m-t-20">
+                            <table id="iban_code" class="table table-bordered">
+                                <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>BANK NAME</th>
+                                    <th>IBAN CODE</th>
+                                    <th>ACTION</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr *ngFor="let bank of banks; let i=index;">
+                                    <td>{{i + 1}}</td>
+                                    <!--<twithdrawpendingding.email}}</td>-->
+                                    <td>{{bank.name}}</td>
+                                    <td>{{bank.iban_code}}</td>
+                                    <td>
+                                        <button type="button" class="btn btn-danger btn-round" (click)="deleteBank(bank.id)">
+                                            <i class="fa fa-remove"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                                <tr *ngIf="banks.length == 0">
+                                    <td class="text-center" colspan="4">
+                                        No Banks.
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row" *ngIf="selCoin == 'TL'">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="card-title">
+                            <h3>FEE SETTING</h3>
+                        </div>
+                        <form class="form-material">
+                            <div class="form-group row">
+                                <label class="control-label text-right col-md-3">Deposit Fee (<i class="fa fa-turkish-lira"></i>)</label>
+                                <div class="col-md-9">
+                                    <input type="text" class="form-control" name="deposit_fee" [(ngModel)]="sysSettings.tl_deposit_fee">
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="control-label text-right col-md-3">Withdraw Fee (<i class="fa fa-turkish-lira"></i>)</label>
+                                <div class="col-md-9">
+                                    <input type="text" class="form-control" name="withdraw_fee" [(ngModel)]="sysSettings.tl_withdraw_fee">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-3"></div>
+                                <div class="col-md-9">
+                                    <button type="button" class="btn btn-success" (click)="saveTLFee()">
+                                        UPDATE
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row" *ngIf="selCoin == 'USD'">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="card-title">
+                            <h3>FEE SETTING</h3>
+                        </div>
+                        <form class="form-material">
+                            <div class="form-group row">
+                                <label class="control-label text-right col-md-3">Deposit Fee (<i class="fa fa-usd"></i>)</label>
+                                <div class="col-md-9">
+                                    <input type="text" class="form-control" name="deposit_fee" [(ngModel)]="sysSettings.usd_deposit_fee">
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="control-label text-right col-md-3">Withdraw Fee (<i class="fa fa-usd"></i>)</label>
+                                <div class="col-md-9">
+                                    <input type="text" class="form-control" name="withdraw_fee" [(ngModel)]="sysSettings.usd_withdraw_fee">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-3"></div>
+                                <div class="col-md-9">
+                                    <button type="button" class="btn btn-success" (click)="saveUSDFee()">
+                                        UPDATE
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row" *ngIf="selCoin == 'EURO'">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="card-title">
+                            <h3>FEE SETTING</h3>
+                        </div>
+                        <form class="form-material">
+                            <div class="form-group row">
+                                <label class="control-label text-right col-md-3">Deposit Fee (<i class="fa fa-euro"></i>)</label>
+                                <div class="col-md-9">
+                                    <input type="text" class="form-control" name="deposit_fee" [(ngModel)]="sysSettings.euro_deposit_fee">
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="control-label text-right col-md-3">Withdraw Fee (<i class="fa fa-euro"></i>)</label>
+                                <div class="col-md-9">
+                                    <input type="text" class="form-control" name="withdraw_fee" [(ngModel)]="sysSettings.euro_withdraw_fee">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-3"></div>
+                                <div class="col-md-9">
+                                    <button type="button" class="btn btn-success" (click)="saveEUROFee()">
+                                        UPDATE
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-9" *ngIf="selCoinInfo.is_crypto == 1">
+        <!--<div class="row" *ngIf="selCoin != 'XRP' && selCoin != 'ETH' && selCoinInfo.is_erc20 == 0">-->
+            <!--<div class="col-md-12">-->
+                <!--<div class="card">-->
+                    <!--<div class="card-body">-->
+                        <!--<div class="card-title">-->
+                            <!--<h3>MAIN WALLET</h3>-->
+                        <!--</div>-->
+                        <!--<div>-->
+                            <!--<button type="button" class="btn btn-success" (click)="addCoinAddress()">-->
+                                <!--ADD WALLET-->
+                            <!--</button>-->
+                        <!--</div>-->
+                        <!--<div class="table-responsive m-t-20">-->
+                            <!--<table class="table table-bordered">-->
+                                <!--<thead>-->
+                                <!--<tr>-->
+                                    <!--<th>#</th>-->
+                                    <!--<th>ADDRESS</th>-->
+                                <!--</tr>-->
+                                <!--</thead>-->
+                                <!--<tbody>-->
+                                <!--<tr *ngFor="let address of addresses; let i=index;">-->
+                                    <!--<td>{{i + 1}}</td>-->
+                                    <!--<td>{{address.value}}</td>-->
+                                <!--</tr>-->
+                                <!--<tr *ngIf="addresses.length == 0">-->
+                                    <!--<td class="text-center" colspan="2">-->
+                                        <!--No Addresses.-->
+                                    <!--</td>-->
+                                <!--</tr>-->
+                                <!--</tbody>-->
+                            <!--</table>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                <!--</div>-->
+            <!--</div>-->
+        <!--</div>-->
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="card-title">
+                            <h3>FEE SETTING</h3>
+                        </div>
+                        <form class="form-material">
+                            <div class="form-group row">
+                                <label class="control-label text-right col-md-3">User Withdraw Fee ({{selCoin}})</label>
+                                <div class="col-md-9">
+                                    <input type="text" class="form-control" name="user_withdraw_fee" [(ngModel)]="selCoinInfo.withdraw_fee">
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="control-label text-right col-md-3">Minimum Withdraw Amount ({{selCoin}})</label>
+                                <div class="col-md-9">
+                                    <input type="text" class="form-control" name="min_withdraw" [(ngModel)]="selCoinInfo.min_withdraw">
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="control-label text-right col-md-3">Exchange Buy Fee (%)</label>
+                                <div class="col-md-9">
+                                    <input type="text" class="form-control" name="buy_fee" [(ngModel)]="selCoinInfo.buy_fee">
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="control-label text-right col-md-3">Exchange Sell Fee (%)</label>
+                                <div class="col-md-9">
+                                    <input type="text" class="form-control" name="sale_fee" [(ngModel)]="selCoinInfo.sell_fee">
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="control-label text-right col-md-3">Referral Fee (%)</label>
+                                <div class="col-md-9">
+                                    <input type="text" class="form-control" name="ref_fee" [(ngModel)]="selCoinInfo.ref_fee">
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="control-label text-right col-md-3">Deposit</label>
+                                <div class="col-md-9">
+                                    <input type="text" class="form-control" name="deposit" [(ngModel)]="selCoinInfo.deposit">
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="control-label text-right col-md-3">Withdraw</label>
+                                <div class="col-md-9">
+                                    <input type="text" class="form-control" name="withdraw" [(ngModel)]="selCoinInfo.withdraw">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-3"></div>
+                                <div class="col-md-9">
+                                    <button type="button" class="btn btn-success" (click)="saveCoinFee()">
+                                        UPDATE
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<modal-dialog [(visible)]="showBankAddModal" [closable]="false">
+    <form class="form-horizontal">
+        <h2 class="text-center">
+            INPUT NEW BANK
+        </h2>
+
+        <input type="text" class="form-control" style="text-align: center; font-size: 20px;" name="bank_name" [(ngModel)]="new_bank.name">
+
+        <h2 class="text-center">
+            INPUT IBAN CODE
+        </h2>
+
+        <input type="text" class="form-control" style="text-align: center; font-size: 20px;" name="iban_code" [(ngModel)]="new_bank.iban_code">
+
+        <div class="text-center" style="margin-top: 20px;">
+            <button type="button" class="btn btn-primary" (click)="addBank()">Submit</button>
+            <button type="button" class="btn btn-default" (click)="showBankAddModal = !showBankAddModal">Cancel</button>
+        </div>
+    </form>
+</modal-dialog>
